@@ -56,9 +56,18 @@
       permanent: yes
       state: enabled
     loop:
-      - ssh
+      - cockpit
       - http
       - https
+      - ssh
+
+# systemd
+  - name: start the server
+    ansible.builtin.systemd:
+      name: cockpit.socket
+      state: started
+      enabled: yes
+
 #
 # checks
 
