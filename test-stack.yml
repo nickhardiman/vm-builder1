@@ -1,0 +1,14 @@
+- name: test stack
+  hosts: builder
+  gather_facts: no
+  tasks:
+
+  - name: check with ping
+    ping:
+
+  - name: check the API
+    uri:
+      url: https://builder1.lab.example.com/api/
+      validate_certs: no
+    delegate_to: localhost
+
