@@ -8,11 +8,24 @@
   gather_facts: no
   tasks: 
 
-  - name: install packages
+  # modularity 'container-tools' provides commands 'skopeo', 'podman', and more
+  - name: install container packages
+    ansible.builtin.dnf:
+      name: '@container-tools:rhel8'
+      state: present
+    register: r_dnf_container
+
+  # !!! some duplicated in group_vars/builder/main.yml
+  # package 'lorax' provides command 'mkksiso'
+  # package 'weldr-client' provides command 'composer-cli'
+  - name: install image builder packages
     ansible.builtin.dnf:
       name: 
-        - osbuild-composer
         - cockpit-composer
+        - git
+        - lorax
+        - osbuild-composer
+        - weldr-client
       state: latest
     register: r_dnf_builder
 
