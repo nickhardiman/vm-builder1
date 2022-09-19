@@ -13,5 +13,9 @@
 - name: install the server certificate
   ansible.builtin.import_playbook: cert-cockpit.yml
 
+# how about ansible? 
+# subscription-manager repos --enable ansible-automation-platform-2.2-for-rhel-8-x86_64-rpms
+# dnf install ansible-core ansible-navigator
+#
 
 
