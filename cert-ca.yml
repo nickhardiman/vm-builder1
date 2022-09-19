@@ -29,6 +29,15 @@
       passphrase: "{{ secret_ca_passphrase }}"
       cipher: auto
 
+  # copy key to /etc/pki/tls/private/
+  # ??? useful?
+  - name: copy new private key to TLS directory
+    ansible.builtin.copy:
+      remote_src: "{{ dir_ca }}/ca-certificate.key"
+      dest: /etc/pki/tls/private/ca-certificate.key
+      mode: '0600'
+    register: r_cp_ca_key
+
   # create CSR
   # This CSR is passed on using a registered variable.
   # To write the CSR to a file, see this page.
@@ -65,15 +74,13 @@
       var: r_ca_cert
       verbosity: 1
 
-  # copy to /etc/pki/ca-trust/source/anchors/
+  # copy certificate to /etc/pki/ca-trust/source/anchors/
   - name: copy new self-signed certificate to trust anchors directory
-    ansible.builtin.command:
-      cmd: "cp {{ dir_ca }}/ca-certificate.pem /etc/pki/ca-trust/source/anchors/"
-      creates: /etc/pki/ca-trust/source/anchors/ca-certificate.pem
+    ansible.builtin.copy:
+      remote_src: "{{ dir_ca }}/ca-certificate.pem"
+      dest: /etc/pki/ca-trust/source/anchors/ca-certificate.key
+      mode: '0644'
     register: r_cp_ca_cert
-
-  - debug: 
-      var: r_cp_ca_cert
 
   # update-ca-trust
   - name: update libraries of trusted CA certificates
