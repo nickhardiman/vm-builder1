@@ -1,12 +1,12 @@
 
 - name: build the virtual hardware, install OS, and install apps
-  ansible.builtin.import_playbook: machine.yml
+  ansible.builtin.import_playbook: create-machine.yml
 
-- name: install supporting apps
-  ansible.builtin.import_playbook: custom-os.yml
+- name: configure OS
+  ansible.builtin.import_playbook: customize-os.yml
 
-- name: install service
-  ansible.builtin.import_playbook: service.yml
+- name: install services
+  ansible.builtin.import_playbook: install-apps.yml
 
 - name: test
   ansible.builtin.import_playbook: test-stack.yml

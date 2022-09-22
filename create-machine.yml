@@ -6,8 +6,7 @@
   serial: 1
   roles: 
   - role: libvirt-guest
-    delegate_to: localhost
-    connection: local
+    delegate_to: hypervisor
 
   tasks:
   - name: Wait for new server to be ready

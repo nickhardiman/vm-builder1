@@ -4,11 +4,10 @@
   tasks:
 
   - name: check with ping
-    ping:
+    ansible.builtin.ping:
 
   - name: check the API
-    uri:
+    ansible.builtin.uri:
       url: https://builder1.lab.example.com/api/
       validate_certs: no
-    delegate_to: localhost
 
