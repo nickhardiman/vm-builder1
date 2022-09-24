@@ -7,8 +7,6 @@
   # ansible already has a become password
   # this new host has a different become password.
   # By the time the role is finished, user has passwordless sudo and this is no longer needed.
-  vars:
-    ansible_become_password: "{{ user_ansible_password }}"
   roles:
     - ansible-target
 # what other prereqs? 
