@@ -13,10 +13,8 @@
 - name: install the server certificate
   ansible.builtin.import_playbook: cert-cockpit.yml
 
-# How about ansible? 
-# This is a RHEL 8 machine. Could be handy.
-# # subscription-manager repos --enable ansible-automation-platform-2.2-for-rhel-8-x86_64-rpms
-# dnf install ansible-core ansible-navigator ansible-builder
-#
+- name: install ansible tools
+  ansible.builtin.import_playbook: ansible-tools.yml
+
 
 
