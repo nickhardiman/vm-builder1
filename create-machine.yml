@@ -9,7 +9,7 @@
 
   roles: 
   - role: libvirt-guest
-    delegate_to: host2.lab.example.com
+    delegate_to: "{{ groups['hypervisor'][0] }}"
 
   tasks:
   - name: Wait for new server to be ready
