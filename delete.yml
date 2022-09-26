@@ -8,9 +8,10 @@
   gather_facts: no
   vars:
     host: builder1
-  vars_prompt:
-  - name: seriously
-    prompt: "Delete '{{ host }}'? Seriously? Ctrl-C if no"
+  # ansible tower and controller don't play with vars_prompt.
+  #vars_prompt:
+  #- name: seriously
+  #  prompt: "Delete '{{ host }}'? Seriously? Ctrl-C if no"
 
   tasks:  
 
