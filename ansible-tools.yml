@@ -9,8 +9,11 @@
     # "subscription-manager repos --enable ansible-automation-platform-2.2-for-rhel-8-x86_64-rpms"
   
   - name: enable repo
-    ansible.builtin.command: 
-      cmd: "subscription-manager repos --enable ansible-automation-platform-2.2-for-rhel-8-x86_64-rpms"
+    #ansible.builtin.command: 
+      #cmd: "subscription-manager repos --enable ansible-automation-platform-2.2-for-rhel-8-x86_64-rpms"
+    rhsm_repository:
+      name: ansible-automation-platform-2.2-for-rhel-8-x86_64-rpms
+      state: enabled
 
   - name: install packages
     ansible.builtin.dnf: 
