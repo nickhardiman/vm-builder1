@@ -4,12 +4,12 @@
   become: yes
   gather_facts: no
   serial: 1
-  #vars_files:
-  #- vault.yml
+  vars_files:
+  - vault.yml
 
   roles: 
   - role: libvirt-guest
-    delegate_to: host1.lab.example.com
+    delegate_to: host2.lab.example.com
 
   tasks:
   - name: Wait for new server to be ready
