@@ -4,13 +4,12 @@
   become: yes
   gather_facts: no
   vars:
-    server_dir: /root/ca
-    server_key_file: "{{ server_dir }}/{{ fqdn }}.key"
-    server_cert_file: "{{ server_dir }}/{{ fqdn }}.pem"
+    server_key_file: "/etc/pki/tls/private/{{ fqdn }}.key"
+    server_cert_file: "/etc/pki/tls/certs/{{ fqdn }}.pem"
 
   tasks: 
 
-  - name: remove auto-generated self-signed certificate files
+  - name: remove cockpit auto-generated self-signed certificate files
     ansible.builtin.file:
       path: 
       - /etc/cockpit/ws-certs.d/0-self-signed-ca.pem 
@@ -18,12 +17,12 @@
       - /etc/cockpit/ws-certs.d/0-self-signed.key
       state: absent
 
-  - name: copy server cert
+  - name: copy server cert for cockpit
     ansible.builtin.slurp:
       src: "{{ server_cert_file }}"
     register: r_cert
 
-  - name: copy server cert
+  - name: copy server key for cockpit
     ansible.builtin.slurp:
       src: "{{ server_key_file }}"
     register: r_key
