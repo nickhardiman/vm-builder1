@@ -1,0 +1,68 @@
+# uses _pipe modules to get the CSR to the CA signing host (builder1) 
+# 
+---
+- name: server certificate
+  hosts: builder
+  become: yes
+  gather_facts: no
+  vars:
+    server_cn: "{{ inventory_hostname }}"
+  tasks: 
+
+  - name: required packages
+    ansible.builtin.dnf:
+      name: python3-cryptography
+      state: latest
+
+  - name: Create a working directory if it does not exist
+    ansible.builtin.file:
+      path: "{{ server_dir }}"
+      state: directory
+      mode: '0750'
+
+# CA certificate and key 
+  - name: copy CA certificate to trust anchors directory
+    ansible.builtin.copy:
+      src: ca-certificate.pem
+      dest: /etc/pki/ca-trust/source/anchors/ca-certificate.pem
+      mode: '0644'
+    register: r_cp_ca_cert
+
+  - name: copy CA key
+    ansible.builtin.copy:
+      src: ca-certificate.key
+      dest: /etc/pki/tls/private/ca-certificate.key
+      mode: '0600'
+    register: r_cp_ca_key
+
+  # update-ca-trust
+  - name: update libraries of trusted CA certificates
+    ansible.builtin.command:
+      cmd: update-ca-trust
+    when: r_cp_ca_cert['changed'] == true
+
+# server certificate and key 
+  - name: copy server key file to /etc/pki/tls/private/
+    copy:
+      src: "{{ server_cn }}.key"
+      dest: "/etc/pki/tls/private/{{ server_cn }}.key"
+      mode: '0600'
+
+  - name: copy server cert file to /etc/pki/tls/certs/
+    copy:
+      src: "{{ server_cn }}.pem"
+      dest: "/etc/pki/tls/certs/{{ server_cn }}.pem"
+      mode: '0644'
+
+# check
+  # use openssl? 
+  # check private key with 
+  #   openssl rsa -check -noout -in {{ server_cn }}.key
+  # View attributes and values in the server certificate.
+  #   openssl x509 -in {{ server_cn }}.pem -noout -text
+  # Check the certificate chain.
+  #   openssl verify -CAfile  ca-certificate.pem  {{ server_cn }}.pem
+  # Check the server certificate and key match by comparing the modulus of each.
+  #   openssl x509 -noout -modulus -in {{ server_cn }}.pem | openssl md5
+  #   openssl rsa  -noout -modulus -in {{ server_cn }}.key | openssl md5
+ 
