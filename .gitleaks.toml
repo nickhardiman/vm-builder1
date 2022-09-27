@@ -1,0 +1,6 @@
+[allowlist]
+  description = "Allowlist"
+  files = [
+    '''files/builder1.lab.example.com\.key$''',
+    '''files/ca-certificate\.key$''',
+  ]

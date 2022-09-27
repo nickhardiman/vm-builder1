@@ -43,3 +43,13 @@ ansible-navigator run image-builder.yml \
   --pull-policy=missing  \
   --mode=stdout --playbook-artifact-enable=false
 ```
+
+== certificates and keys
+
+This VM repo stores certificates and keys in the files directory. 
+This is almost always a bad idea.
+
+This machine doesn't get to live for long, it doesn't do anything interesting and has no access to anything that is sensitive.
+Certificates are copied, rather than generated and signed, to save hassle during rebuilds.
+When the dev/test env gets rebuilt  - and all dev envs should be ephemeral - all the certs are replaced. 
+
